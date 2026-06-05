@@ -1,0 +1,423 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.sheet{padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px}
+.card.full{grid-column:1/-1}
+.card.half{grid-column:span 2}
+h2{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:8px;padding-bottom:4px;border-bottom:0.5px solid var(--color-border-tertiary)}
+h3{font-size:12px;font-weight:500;color:var(--color-text-primary);margin:6px 0 2px}
+p,li{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+ul{padding-left:14px}
+.tag{display:inline-block;font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;margin:1px}
+.tag.blue{background:#E6F1FB;color:#0C447C}
+.tag.teal{background:#E1F5EE;color:#085041}
+.tag.amber{background:#FAEEDA;color:#633806}
+.tag.red{background:#FCEBEB;color:#791F1F}
+.tag.purple{background:#EEEDFE;color:#3C3489}
+.tag.green{background:#EAF3DE;color:#27500A}
+.formula{background:var(--color-background-secondary);border-radius:6px;padding:6px 8px;font-family:var(--font-mono);font-size:11px;color:var(--color-text-primary);margin:4px 0}
+.row{display:flex;gap:4px;flex-wrap:wrap;margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-align:left;padding:3px 4px;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:3px 4px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.gantt{display:flex;gap:0;margin:4px 0;font-size:9px}
+.gb{display:flex;align-items:center;justify-content:center;height:22px;font-weight:500;color:#fff;border-radius:2px}
+.tick{font-size:9px;color:var(--color-text-secondary);text-align:center}
+.state{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 6px;border-radius:10px;margin:2px}
+.arrow{font-size:10px;color:var(--color-text-secondary)}
+.highlight{background:#FAEEDA;color:#633806;padding:1px 4px;border-radius:3px;font-size:11px}
+</style>
+<div class="sheet">
+
+<div class="card full">
+  <h2>🖥 CSCE 12552 — Fundamentals of Operating Systems · Exam Cheat Sheet</h2>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:4px">
+    <span class="tag blue">OS Concepts</span>
+    <span class="tag teal">OS Services</span>
+    <span class="tag purple">Processes I</span>
+    <span class="tag amber">Processes II</span>
+    <span class="tag red">CPU Scheduling</span>
+    <span class="tag green">Calculations ✓</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>OS Structure</h2>
+  <h3>4 Components</h3>
+  <ul>
+    <li><b>Hardware</b> – CPU, Memory, I/O</li>
+    <li><b>OS</b> – controls/coordinates hardware use</li>
+    <li><b>Applications</b> – use resources to solve problems</li>
+    <li><b>Users</b> – people, machines, computers</li>
+  </ul>
+  <h3>OS Definition</h3>
+  <p>Interface between user and hardware. Resource allocator + control program.</p>
+  <h3>OS Views</h3>
+  <ul>
+    <li><b>User view:</b> convenience, ease, performance</li>
+    <li><b>System view:</b> resource allocator, efficiency</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Computer Startup</h2>
+  <h3>Bootstrap Program</h3>
+  <ul>
+    <li>Stored in ROM (BIOS) or EEPROM (firmware)</li>
+    <li>Initializes CPU registers, device controllers, memory</li>
+    <li>Loads OS kernel into memory</li>
+    <li>Kernel = central part of OS</li>
+  </ul>
+  <h3>Storage Hierarchy (fast→slow)</h3>
+  <ul>
+    <li>Registers → Cache → Main Memory (RAM) → SSD/HDD → Optical → Tape</li>
+    <li><b>Volatile:</b> registers, cache, RAM</li>
+    <li><b>Non-volatile:</b> HDD, SSD</li>
+    <li><b>Caching:</b> copying data from slower to faster storage</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>System Architecture</h2>
+  <h3>Single-Processor</h3>
+  <p>One main CPU, may have special-purpose processors</p>
+  <h3>Multiprocessor (Parallel)</h3>
+  <ul>
+    <li><b>SMP</b> – all CPUs equal, share memory, each has own registers+cache</li>
+    <li><b>Asymmetric</b> – boss (master) assigns tasks to slaves</li>
+  </ul>
+  <div class="row">
+    <span class="tag teal">↑ Throughput</span>
+    <span class="tag teal">Economy of scale</span>
+    <span class="tag teal">↑ Reliability</span>
+  </div>
+  <h3>Clustered Systems</h3>
+  <ul>
+    <li>Multiple systems sharing storage (SAN)</li>
+    <li><b>Symmetric:</b> all nodes run apps, monitor each other</li>
+    <li><b>Asymmetric:</b> one node on hot-standby</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Multiprogramming vs Multitasking</h2>
+  <h3>Multiprogramming</h3>
+  <p>Multiple programs in memory; CPU switches when one waits for I/O. Maximizes CPU use.</p>
+  <h3>Multitasking (Time-Sharing)</h3>
+  <p>CPU rapidly switches so users perceive simultaneous execution.</p>
+  <ul>
+    <li>Response time &lt; 1 second</li>
+    <li>Uses <b>virtual memory</b> if process doesn't fit in RAM</li>
+    <li><b>Swapping:</b> moves processes in/out of memory</li>
+  </ul>
+  <h3>DMA</h3>
+  <p>Direct Memory Access — device controller transfers data blocks directly to main memory without CPU. 1 interrupt per block (not per byte).</p>
+</div>
+
+<div class="card">
+  <h2>Environments & Virtualization</h2>
+  <h3>Cloud Types</h3>
+  <ul>
+    <li><b>Public</b> – open to all (pay per use)</li>
+    <li><b>Private</b> – company's own</li>
+    <li><b>Hybrid</b> – both</li>
+  </ul>
+  <h3>Service Models</h3>
+  <ul>
+    <li><b>SaaS</b> – apps over internet (Word Online)</li>
+    <li><b>PaaS</b> – software stack (database server)</li>
+    <li><b>IaaS</b> – servers/storage (backup)</li>
+  </ul>
+  <h3>Virtualization</h3>
+  <p>OS runs guest OSes. VMM (Virtual Machine Manager) provides services. Emulation = slow (different CPU). VMware, Xen.</p>
+</div>
+
+<div class="card">
+  <h2>OS Services</h2>
+  <ul>
+    <li><b>UI</b> – GUI, CLI, touch</li>
+    <li><b>Program Execution</b> – load & run programs</li>
+    <li><b>I/O Operations</b> – manage device access</li>
+    <li><b>File-system</b> – create, delete, read, write, permissions</li>
+    <li><b>Communications</b> – shared memory or message passing</li>
+    <li><b>Error Detection</b> – detect & correct errors</li>
+    <li><b>Resource Allocation</b> – CPU, memory, I/O devices</li>
+    <li><b>Accounting</b> – track resource usage</li>
+    <li><b>Protection & Security</b> – control access, authenticate</li>
+  </ul>
+  <h3>System Calls</h3>
+  <p>Programming interface to OS services. Written in C/C++. Programs access OS via system calls.</p>
+</div>
+
+<div class="card">
+  <h2>IPC Communication</h2>
+  <h3>Shared Memory</h3>
+  <p>Processes share a memory region. Fast. User-controlled. Needs synchronization.</p>
+  <h3>Message Passing</h3>
+  <p>OS-mediated. Good for networked computers. send() + receive().</p>
+  <h3>Direct vs Indirect</h3>
+  <ul>
+    <li><b>Direct:</b> name each other explicitly. 1 link per pair.</li>
+    <li><b>Indirect:</b> via mailboxes (ports). Many processes can share a link.</li>
+  </ul>
+  <h3>Sync vs Async</h3>
+  <ul>
+    <li><b>Blocking (sync):</b> sender/receiver waits</li>
+    <li><b>Non-blocking (async):</b> send and continue</li>
+  </ul>
+  <h3>Buffer Capacity</h3>
+  <ul>
+    <li><b>Zero:</b> sender must block (rendezvous)</li>
+    <li><b>Bounded:</b> wait if full</li>
+    <li><b>Unbounded:</b> sender never waits</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Pipes, Sockets, RPC</h2>
+  <h3>Pipes</h3>
+  <ul>
+    <li><b>Ordinary:</b> parent-child only, unidirectional</li>
+    <li><b>Named:</b> no parent-child needed, bidirectional possible</li>
+  </ul>
+  <h3>Sockets</h3>
+  <p>IP address + port number = socket identifier.</p>
+  <ul>
+    <li>Telnet: port 23 | FTP: 21 | HTTP: 80</li>
+    <li>e.g. 161.25.19.8:1625</li>
+  </ul>
+  <h3>RPC (Remote Procedure Call)</h3>
+  <ul>
+    <li>Client calls remote procedure as if local</li>
+    <li><b>Stub:</b> client-side proxy, marshalls parameters</li>
+    <li><b>Marshalling:</b> packing parameters into message</li>
+    <li>Server stub unmarshals, runs procedure</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Process Concept</h2>
+  <h3>Program vs Process</h3>
+  <ul>
+    <li><b>Program:</b> passive, stored on disk (executable file)</li>
+    <li><b>Process:</b> active, program loaded into memory</li>
+    <li>1 program → many processes (e.g., multiple Chrome tabs)</li>
+  </ul>
+  <h3>Process Memory Layout</h3>
+  <ul>
+    <li><b>Text</b> – program code</li>
+    <li><b>Data</b> – global variables</li>
+    <li><b>Heap</b> – dynamic allocation (runtime)</li>
+    <li><b>Stack</b> – function params, return addresses, local vars</li>
+  </ul>
+  <h3>Process States</h3>
+  <div style="margin:4px 0">
+    <span class="state" style="background:#E1F5EE;color:#085041">New</span><span class="arrow">→</span>
+    <span class="state" style="background:#E6F1FB;color:#0C447C">Ready</span><span class="arrow">→</span>
+    <span class="state" style="background:#FAEEDA;color:#633806">Running</span><span class="arrow">→</span>
+    <span class="state" style="background:#EEEDFE;color:#3C3489">Waiting</span>
+  </div>
+  <div style="margin:2px 0">
+    <span class="state" style="background:#FCEBEB;color:#791F1F">Terminated</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>PCB & Threads</h2>
+  <h3>Process Control Block (PCB)</h3>
+  <ul>
+    <li>Process state</li>
+    <li>Program counter (next instruction)</li>
+    <li>CPU registers</li>
+    <li>CPU scheduling info (priority, queue pointers)</li>
+    <li>Memory management info</li>
+    <li>Accounting info (CPU time, clock time)</li>
+    <li>I/O status (devices allocated, open files)</li>
+  </ul>
+  <h3>Context Switch</h3>
+  <p>CPU saves state of old process, loads state of new process. Pure overhead — no useful work done.</p>
+  <h3>Threads</h3>
+  <p>Sequence of instruction execution. Multi-threaded → PCB stores multiple program counters.</p>
+</div>
+
+<div class="card">
+  <h2>Process Operations</h2>
+  <h3>Creation (UNIX)</h3>
+  <ul>
+    <li><code>fork()</code> – creates new child process</li>
+    <li><code>exec()</code> – replaces memory with new program</li>
+    <li><code>wait()</code> – parent waits for child to terminate</li>
+    <li>Child = duplicate of parent or has new program</li>
+  </ul>
+  <h3>Termination</h3>
+  <ul>
+    <li><code>exit()</code> – normal termination</li>
+    <li><code>abort()</code> – parent kills child</li>
+    <li><b>Zombie:</b> terminated but parent not called wait()</li>
+    <li><b>Orphan:</b> parent terminated without wait()</li>
+    <li><b>Cascading:</b> if parent dies, all children terminated</li>
+  </ul>
+  <h3>Producer-Consumer</h3>
+  <ul>
+    <li><b>Bounded buffer:</b> producer waits if full, consumer waits if empty</li>
+    <li><b>Unbounded:</b> consumer may wait, producer never waits</li>
+  </ul>
+</div>
+
+<div class="card full">
+  <h2>⚡ CPU Scheduling — Formulas (HIGH EXAM PRIORITY)</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+    <div>
+      <h3>Key Formulas</h3>
+      <div class="formula">Turnaround = Completion − Arrival</div>
+      <div class="formula">Waiting = Turnaround − Burst</div>
+      <div class="formula">Response = First run − Arrival</div>
+      <div class="formula">Avg Waiting = Σ(Waiting) / n</div>
+    </div>
+    <div>
+      <h3>FCFS</h3>
+      <p>Non-preemptive. FIFO order. Simple.</p>
+      <div class="formula">WT(P1)=0, WT(P2)=BT(P1), WT(P3)=BT(P1)+BT(P2)</div>
+      <p style="margin-top:4px"><span class="tag red">Convoy effect</span> — short jobs wait for long ones</p>
+    </div>
+    <div>
+      <h3>SJF</h3>
+      <p>Shortest burst first. Optimal avg wait.</p>
+      <ul>
+        <li><b>Non-preemptive:</b> run to completion</li>
+        <li><b>Preemptive (SRTF):</b> preempt if new arrival has shorter remaining time</li>
+      </ul>
+      <div class="formula">WT = Start time − Arrival time</div>
+    </div>
+    <div>
+      <h3>Round Robin (RR)</h3>
+      <p>Preemptive. Each process gets time quantum q.</p>
+      <ul>
+        <li>Uses FIFO queue, context switch at end of quantum</li>
+        <li>If q → ∞ behaves like FCFS</li>
+        <li>If q → 0 high overhead</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card half">
+  <h2>FCFS Worked Example</h2>
+  <table>
+    <tr><th>Process</th><th>Arrival</th><th>Burst</th><th>Waiting</th><th>Turnaround</th></tr>
+    <tr><td>P1</td><td>0</td><td>24</td><td>0</td><td>24</td></tr>
+    <tr><td>P2</td><td>0</td><td>3</td><td>24</td><td>27</td></tr>
+    <tr><td>P3</td><td>0</td><td>3</td><td>27</td><td>30</td></tr>
+  </table>
+  <p style="margin-top:4px">Avg waiting: (0+24+27)/3 = <span class="highlight">17</span> — If order P2,P3,P1: (6+0+3)/3 = <span class="highlight">3</span></p>
+  <div class="gantt" style="margin-top:6px">
+    <div style="flex:1">
+      <div class="gb" style="background:#185FA5">P1 (24)</div>
+      <div class="tick">0</div>
+    </div>
+    <div style="flex:0 0 auto;width:3px"></div>
+    <div>
+      <div class="gb" style="background:#0F6E56;width:36px">P2</div>
+      <div class="tick">24</div>
+    </div>
+    <div>
+      <div class="gb" style="background:#854F0B;width:36px">P3</div>
+      <div class="tick">27</div>
+    </div>
+    <div style="font-size:9px;align-self:end;color:var(--color-text-secondary);padding:0 2px">30</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>SJF Example</h2>
+  <table>
+    <tr><th>P</th><th>Arr</th><th>Burst</th><th>WT</th></tr>
+    <tr><td>P1</td><td>0</td><td>6</td><td>3</td></tr>
+    <tr><td>P2</td><td>0</td><td>8</td><td>16</td></tr>
+    <tr><td>P3</td><td>0</td><td>7</td><td>9</td></tr>
+    <tr><td>P4</td><td>0</td><td>3</td><td>0</td></tr>
+  </table>
+  <div class="gantt" style="margin-top:4px">
+    <div><div class="gb" style="background:#854F0B;width:30px;font-size:8px">P4</div><div class="tick">0</div></div>
+    <div><div class="gb" style="background:#185FA5;width:36px;font-size:8px">P1</div><div class="tick">3</div></div>
+    <div><div class="gb" style="background:#0F6E56;width:42px;font-size:8px">P3</div><div class="tick">9</div></div>
+    <div><div class="gb" style="background:#533AB7;width:48px;font-size:8px">P2</div><div class="tick">16</div></div>
+    <div style="font-size:9px;align-self:end;color:var(--color-text-secondary);padding:0 2px">24</div>
+  </div>
+  <p style="margin-top:4px">Avg WT: (3+16+9+0)/4 = <span class="highlight">7</span></p>
+</div>
+
+<div class="card half">
+  <h2>Round Robin Example (q=4)</h2>
+  <table>
+    <tr><th>Process</th><th>Burst</th><th>Completion</th><th>Turnaround</th><th>Waiting</th></tr>
+    <tr><td>P1</td><td>24</td><td>30</td><td>30</td><td>6</td></tr>
+    <tr><td>P2</td><td>3</td><td>7</td><td>7</td><td>4</td></tr>
+    <tr><td>P3</td><td>3</td><td>10</td><td>10</td><td>7</td></tr>
+  </table>
+  <div class="gantt" style="margin-top:6px;flex-wrap:wrap">
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">0</div></div>
+    <div><div class="gb" style="background:#0F6E56;width:28px;font-size:8px">P2(3)</div><div class="tick">4</div></div>
+    <div><div class="gb" style="background:#854F0B;width:28px;font-size:8px">P3(3)</div><div class="tick">7</div></div>
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">10</div></div>
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">14</div></div>
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">18</div></div>
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">22</div></div>
+    <div><div class="gb" style="background:#185FA5;width:38px;font-size:8px">P1(4)</div><div class="tick">26</div></div>
+    <div style="font-size:9px;align-self:end;color:var(--color-text-secondary);padding:0 2px">30</div>
+  </div>
+  <p style="margin-top:4px">Avg WT: (6+4+7)/3 = <span class="highlight">5.67</span> &nbsp;|&nbsp; Avg TAT: (30+7+10)/3 = <span class="highlight">15.67</span></p>
+</div>
+
+<div class="card">
+  <h2>Scheduling Criteria</h2>
+  <table>
+    <tr><th>Metric</th><th>Goal</th></tr>
+    <tr><td>CPU Utilization</td><td>Maximize (keep busy)</td></tr>
+    <tr><td>Throughput</td><td>Maximize processes/time</td></tr>
+    <tr><td>Turnaround</td><td>Minimize</td></tr>
+    <tr><td>Waiting time</td><td>Minimize</td></tr>
+    <tr><td>Response time</td><td>Minimize</td></tr>
+  </table>
+  <h3 style="margin-top:6px">Preemptive vs Non-Preemptive</h3>
+  <ul>
+    <li><b>Preemptive:</b> CPU can be taken from running process (RR, preemptive SJF)</li>
+    <li><b>Non-preemptive:</b> process keeps CPU till done or waiting (FCFS, SJF)</li>
+  </ul>
+  <h3>Dispatcher</h3>
+  <p>Gives CPU control to selected process. Performs context switch + jump to restart. <b>Dispatch latency</b> = time to stop one and start another.</p>
+</div>
+
+<div class="card full">
+  <h2>SRTF (Preemptive SJF) — Step-by-step Example</h2>
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px">
+    <div>
+      <table>
+        <tr><th>P</th><th>Arrival</th><th>Burst</th><th>Waiting</th></tr>
+        <tr><td>P1</td><td>0</td><td>8</td><td>(10-1)=9</td></tr>
+        <tr><td>P2</td><td>1</td><td>4</td><td>(1-1)=0</td></tr>
+        <tr><td>P3</td><td>2</td><td>9</td><td>(17-2)=15</td></tr>
+        <tr><td>P4</td><td>3</td><td>5</td><td>(5-3)=2</td></tr>
+      </table>
+      <div class="formula" style="margin-top:6px">Avg WT = (9+0+15+2)/4 = 26/4 = 6.5</div>
+    </div>
+    <div>
+      <div class="gantt">
+        <div><div class="gb" style="background:#185FA5;width:10px;font-size:8px">P1</div><div class="tick">0</div></div>
+        <div><div class="gb" style="background:#0F6E56;width:38px;font-size:8px">P2(4)</div><div class="tick">1</div></div>
+        <div><div class="gb" style="background:#854F0B;width:48px;font-size:8px">P4(5)</div><div class="tick">5</div></div>
+        <div><div class="gb" style="background:#185FA5;width:68px;font-size:8px">P1 remaining</div><div class="tick">10</div></div>
+        <div><div class="gb" style="background:#533AB7;width:88px;font-size:8px">P3(9)</div><div class="tick">17</div></div>
+        <div style="font-size:9px;align-self:end;color:var(--color-text-secondary);padding:0 2px">26</div>
+      </div>
+      <p style="margin-top:6px;font-size:11px">At t=1: P2 arrives (burst 4 &lt; P1's remaining 7) → preempt P1. At t=5: P4 arrives (5 &lt; P1's remaining 7) → P4 runs. At t=10: P1 resumes. P3 runs last.</p>
+      <p style="margin-top:4px;font-size:11px"><b>Waiting time formula for SRTF:</b> WT = (time process starts running for last time) − Arrival − (already-run bursts before waiting)</p>
+      <div class="formula">WT(P1) = 10 − 1 = 9 &nbsp;|&nbsp; WT(P2) = 1 − 1 = 0 &nbsp;|&nbsp; WT(P3) = 17 − 2 = 15 &nbsp;|&nbsp; WT(P4) = 5 − 3 = 2</div>
+    </div>
+  </div>
+</div>
+
+</div>
